@@ -31,10 +31,10 @@ Securing servers is a **layered process** there is no silver bullet. A hardened 
 
 ### Common (Linux + BSD)
 - Disable root login:
-  ```bash
-  # Linux: in /etc/ssh/sshd_config
-  PermitRootLogin no
-  ```
+```bash
+# Linux: in /etc/ssh/sshd_config
+PermitRootLogin no
+```
 
 ```shell
 # FreeBSD: in /etc/ssh/sshd_config
@@ -48,9 +48,9 @@ PermitRootLogin prohibit-password
   * **FreeBSD** (`pw(8)` with `passwd_format=sha512`)
 * Lock unused accounts:
 
-  ```bash
-  sudo usermod -L <user>
-  ```
+```bash
+sudo usermod -L <user>
+```
 * Disable TTY for system/service accounts (`/sbin/nologin` or `/usr/sbin/nologin`).
 
 ### MFA
@@ -64,15 +64,15 @@ PermitRootLogin prohibit-password
 
 * Key-based auth only:
 
-  ```bash
-  PasswordAuthentication no
-  ```
+```bash
+PasswordAuthentication no
+```
 
 * Limit users/groups:
 
-  ```bash
-  AllowUsers admin site1 site2
-  ```
+```bash
+AllowUsers admin site1 site2
+```
 
 * Enable rate limiting:
 
@@ -88,7 +88,7 @@ PermitRootLogin prohibit-password
 * **nftables** (preferred over iptables).
 * Example baseline:
 
-  ```bash
+```bash
   table inet filter {
       chain input {
           type filter hook input priority 0;
@@ -98,7 +98,7 @@ PermitRootLogin prohibit-password
           tcp dport { 22, 80, 443 } accept
       }
   }
-  ```
+```
 
 ### SUSE
 
@@ -112,11 +112,11 @@ PermitRootLogin prohibit-password
 
 * Use **pf**:
 
-  ```pf
-  block in all
-  pass out all keep state
-  pass in on egress proto tcp from any to (egress) port { 22, 80, 443 }
-  ```
+```pf
+block in all
+pass out all keep state
+pass in on egress proto tcp from any to (egress) port { 22, 80, 443 }
+```
 
 ## 🧾 6. Mandatory Access Control (MAC)
 
@@ -199,14 +199,14 @@ Consider **ELK stack (Elasticsearch + Logstash + Kibana)** or **Graylog** for ce
 * Run services under **dedicated system users**.
 * Drop privileges with `systemd` directives:
 
-  ```ini
-  [Service]
-  User=nginx
-  PrivateTmp=true
-  NoNewPrivileges=true
-  ProtectSystem=strict
-  ProtectHome=yes
-  ```
+```ini
+[Service]
+User=nginx
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=yes
+```
 * FreeBSD rc.d equivalents: `setfib`, `jail(8)`, and capsicum (`cap_enter()`).
 
 ## 🧩 12. Virtualization & Container Security
